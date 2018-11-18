@@ -10,8 +10,9 @@ engine = NLQueryEngine('localhost', 9000)
 @app.route("/", methods=['GET'])
 def get_answer():
     question = request.args.get("question")
-    answer = engine.query(str(question), format_='plain')
 
+    raw_answer = engine.query(str(question), format_='plain')
+    answer = {"answer": raw_answer}
     return dumps(answer, ensure_ascii=False)
 
 
@@ -22,7 +23,8 @@ def answer_post():
     if not question:
         question = request.json.get('question')
 
-    answer = engine.query(str(question), format_='plain')
+    raw_answer = engine.query(str(question), format_='plain')
+    answer = {"answer": raw_answer}
     return dumps(answer, ensure_ascii=False)
 
 
