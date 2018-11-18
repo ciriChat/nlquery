@@ -1,16 +1,18 @@
 from nlquery.nlquery import NLQueryEngine
 from flask import Flask
 from flask import request, jsonify
+from json import dumps
 
 app = Flask(__name__)
 
 engine = NLQueryEngine('localhost', 9000)
 
-
 @app.route("/", methods=['GET'])
 def get_answer():
     question = request.args.get("question")
-    return jsonify(engine.query(str(question), format_='plain'))
+    answer = engine.query(str(question), format_='plain')
+
+    return dumps(answer, ensure_ascii=False)
 
 
 @app.route("/", methods=['POST'])
@@ -19,7 +21,9 @@ def answer_post():
 
     if not question:
         question = request.json.get('question')
-    return jsonify(engine.query(str(question), format_='plain'))
+
+    answer = engine.query(str(question), format_='plain')
+    return dumps(answer, ensure_ascii=False)
 
 
 if __name__ == "__main__":
