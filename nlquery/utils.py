@@ -20,7 +20,7 @@ def isfloat(value):
 
 
 def first(lst):
-    return next((x for x in lst if x), None)
+    return next((x for x in lst if x and x.data), None)
 
 
 def dget(d, dkey, default=None):
